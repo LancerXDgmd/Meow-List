@@ -28,11 +28,11 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
     body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
     .navbar { width: 100%; background-color: var(--card-bg); border-bottom: 1px solid var(--card-border); padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
-    .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: bold; text-decoration: none; color: var(--text-main); }
+    .nav-brand img { height: 38px; width: auto; border-radius: 6px; object-fit: contain; }
     .nav-actions { display: flex; align-items: center; gap: 12px; }
     .icon-btn { background: transparent; border: none; color: var(--text-muted); font-size: 1.1rem; cursor: pointer; }
     .hero-section { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px; text-align: center; }
-    .hero-container { max-width: 600px; }
+    .hero-container { max-width: 600px; display: flex; flex-direction: column; align-items: center; }
     .hero-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 12px; color: var(--accent-blue); }
     .hero-subtitle { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 35px; }
     .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; align-items: center; }
@@ -48,7 +48,9 @@
 </head>
 <body>
   <header class="navbar">
-    <a href="index.html" class="nav-brand"><i class="fa-solid fa-globe"></i> LPDM/LIDM LIST</a>
+    <a href="index.html" class="nav-brand">
+      <img src="https://raw.githubusercontent.com/LancerXDgmd/Meow-List/refs/heads/main/80%20Sem%20T%C3%ADtulo_20261017012315.png" alt="Meow List Banner">
+    </a>
     <div class="nav-actions">
       <button class="icon-btn" id="themeToggle"><i class="fa-solid fa-sun"></i></button>
     </div>
@@ -57,7 +59,7 @@
   <section class="hero-section">
     <div class="hero-container">
       <h1 class="hero-title">Meow List</h1>
-      <p class="hero-subtitle"> A Grande Lista Dos Levels Dedicados Ao MeowGD.</p>
+      <p class="hero-subtitle">A Grande Lista Dos Levels Dedicados Ao MeowGD.</p>
       
       <div class="hero-actions">
         <a href="LevelsList.html" class="btn btn-primary">Entrar Na Lista <i class="fa-solid fa-arrow-right"></i></a>
@@ -91,7 +93,6 @@
         document.getElementById('authBtn').style.display = 'none';
         document.getElementById('userProfile').style.display = 'flex';
 
-        // Checar se é MOD ou ADMIN para exibir o botão do painel
         const { data: profile } = await supabaseClient
           .from('profiles')
           .select('role')

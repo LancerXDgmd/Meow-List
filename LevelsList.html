@@ -20,6 +20,7 @@
     body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; padding: 20px; display: flex; flex-direction: column; align-items: center; }
     
     header { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--card-border); padding-bottom: 15px; }
+    .nav-brand img { height: 38px; width: auto; border-radius: 6px; object-fit: contain; }
     .header-actions { display: flex; gap: 10px; }
     .btn-nav { background: var(--accent-blue); color: #fff; text-decoration: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
     .btn-send { background: var(--accent-green); }
@@ -30,18 +31,17 @@
 
     .list-container { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 10px; }
     
-    /* Card apenas com o nome do level */
     .level-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 16px; cursor: pointer; transition: background 0.2s; }
     .level-card:hover { background: #182339; }
     .level-card-header { display: flex; justify-content: space-between; align-items: center; }
     .level-title { font-size: 1.15rem; font-weight: bold; }
 
-    /* Tabelinha interna expansível */
     .level-details-table { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--card-border); display: flex; flex-direction: column; gap: 12px; cursor: default; }
     .meta-row { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; }
     .meta-col { display: flex; flex-direction: column; gap: 4px; }
     .meta-label { font-size: 0.75rem; color: var(--text-muted); font-weight: bold; text-transform: uppercase; }
     .meta-val { font-size: 0.95rem; font-weight: 600; }
+    .badge-nong { background: #9333ea; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; width: fit-content; }
 
     .showcase-container { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 8px; overflow: hidden; border: 1px solid var(--card-border); display: flex; align-items: center; justify-content: center; margin-top: 5px; }
     .showcase-container iframe { width: 100%; height: 100%; border: none; }
@@ -50,15 +50,13 @@
     .desc-box { background: #0b111e; border: 1px solid var(--card-border); padding: 10px 12px; border-radius: 6px; font-size: 0.9rem; color: #cbd5e1; white-space: pre-wrap; word-break: break-word; }
     .id-footer { font-size: 0.8rem; color: var(--text-muted); text-align: right; }
 
-    /* Admin options */
     .admin-actions { margin-top: 10px; display: flex; gap: 8px; justify-content: flex-end; }
     .btn-admin { background: #1e293b; border: 1px solid var(--card-border); color: var(--accent-blue); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
     .btn-admin:hover { background: var(--card-border); }
 
-    /* Modal de Edição para Admins */
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
     .modal-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; width: 100%; max-width: 500px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
-    .modal-card input, .modal-card textarea, .modal-card select { background: #0b111e; border: 1px solid var(--card-border); padding: 10px; border-radius: 6px; color: #fff; width: 100%; font-size: 0.9rem; }
+    .modal-card input, .modal-card textarea { background: #0b111e; border: 1px solid var(--card-border); padding: 10px; border-radius: 6px; color: #fff; width: 100%; font-size: 0.9rem; outline: none; }
     .modal-card textarea { resize: vertical; min-height: 80px; }
     .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
     .btn-save { background: var(--accent-green); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }
@@ -68,26 +66,25 @@
 <body>
 
   <header>
-    <h1><i class="fa-solid fa-cat"></i> Meow List</h1>
+    <a href="index.html" class="nav-brand">
+      <img src="https://raw.githubusercontent.com/LancerXDgmd/Meow-List/refs/heads/main/80%20Sem%20T%C3%ADtulo_20261017012315.png" alt="Meow List Banner">
+    </a>
     <div class="header-actions">
       <a href="EnviarLevel.html" class="btn-nav btn-send"><i class="fa-solid fa-paper-plane"></i> Enviar Nível</a>
       <a href="AprovarLevel.html" class="btn-nav"><i class="fa-solid fa-shield-halved"></i> Moderação</a>
     </div>
   </header>
 
-  <!-- ABAS DA LISTA -->
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('LPDM')">LPDM</button>
     <button class="tab-btn" onclick="switchTab('LIDM')">LIDM</button>
     <button class="tab-btn" onclick="switchTab('LLBDM')">LLBDM</button>
   </div>
 
-  <!-- CONTEÚDO DA LISTA -->
   <main class="list-container" id="listContainer">
     <p style="text-align: center; color: var(--text-muted);">Carregando níveis...</p>
   </main>
 
-  <!-- MODAL DE EDIÇÃO ADMIN -->
   <div class="modal-overlay" id="editModal" style="display: none;">
     <div class="modal-card">
       <h3 style="color:#fff;"><i class="fa-solid fa-pen-to-square"></i> Editar Nível (Admin)</h3>
@@ -145,7 +142,6 @@
       loadCategoryList(currentCategory);
     });
 
-    // Verifica se APENAS Admins têm acesso às funções de edição
     async function checkAdminRole() {
       const { data: { session } } = await supabaseClient.auth.getSession();
       if (!session) { isAdmin = false; return; }
@@ -234,6 +230,16 @@
 
         const descriptionText = lvl.description ? lvl.description : "Sem descrição";
 
+        // Bloco da NONG
+        let nongHtml = '';
+        if (lvl.has_nong) {
+          nongHtml = `
+            <div class="badge-nong">
+              <i class="fa-solid fa-music"></i> NONG: ${lvl.nong_name || 'Sim'}
+            </div>
+          `;
+        }
+
         let detailsHtml = '';
         if (isOpen) {
           detailsHtml = `
@@ -248,6 +254,8 @@
                   <span class="meta-val">${lvl.verifier}</span>
                 </div>
               </div>
+
+              ${nongHtml}
 
               ${showcaseHtml}
 

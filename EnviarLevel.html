@@ -17,7 +17,6 @@
     input, select, textarea { background: #0b111e; border: 1px solid var(--card-border); padding: 10px; border-radius: 6px; color: #fff; font-size: 0.95rem; width: 100%; outline: none; }
     textarea { resize: vertical; min-height: 80px; }
     input:focus, select:focus, textarea:focus { border-color: var(--accent-blue); }
-    input[type="file"] { padding: 8px; cursor: pointer; }
     input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
     button { background: var(--accent-blue); color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; font-size: 1rem; }
     a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; display: inline-block; margin-bottom: 15px; }
@@ -74,11 +73,6 @@
       <div class="form-group">
         <label>Descrição (Opcional)</label>
         <textarea id="levelDescription" placeholder="Escreva uma breve descrição sobre o level..."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label>Arquivo da Thumbnail / Imagem</label>
-        <input type="file" id="thumbnailFile" accept="image/*" required>
       </div>
 
       <div class="checkbox-group">
@@ -157,27 +151,14 @@
       const verifier = document.getElementById('levelVerifier').value.trim();
       const listType = document.getElementById('listType').value;
       const description = document.getElementById('levelDescription').value.trim() || null;
-      const thumbnailFileInput = document.getElementById('thumbnailFile');
       const hasNong = document.getElementById('hasNong').checked;
       const nongName = document.getElementById('nongName').value.trim();
       const btn = document.getElementById('btnSubmit');
 
-      const file = thumbnailFileInput.files[0];
-      if (!file) { alert("Selecione uma imagem para a thumbnail."); return; }
-
-      btn.textContent = "Enviando imagem e dados...";
+      btn.textContent = "Enviando dados...";
       btn.disabled = true;
 
       try {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
-        const filePath = `level_thumbnails/${fileName}`;
-
-        const { error: uploadError } = await supabaseClient.storage.from('thumbnails').upload(filePath, file);
-        if (uploadError) throw uploadError;
-
-        const { data: { publicUrl } } = supabaseClient.storage.from('thumbnails').getPublicUrl(filePath);
-
         const { error: dbError } = await supabaseClient.from('levels').insert({
           gd_id: gdId,
           name: name,
@@ -187,7 +168,6 @@
           showcase_url: showcaseUrl,
           video_url: showcaseUrl,
           description: description,
-          thumbnail_url: publicUrl,
           has_nong: hasNong,
           nong_name: hasNong ? nongName : null,
           submitted_by: session ? session.user.id : null
